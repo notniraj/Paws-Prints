@@ -1,0 +1,28 @@
+*{
+    scroll-behavior: smooth;
+    
+}
+
+body{
+    font-family: "Poppins", sans-serif;
+    scrollbar-color: rgb(212, 210, 210);
+}
+
+body .cover-page{
+    background-image: url("/static/portal/images/coverart.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+}
+
+
+.cover-page .cover-text{
+    h1{
+        font-weight: bold;
+    }
+}
+
+// body .navbar {
+//     // background-color: rgba(245,245,245,1);
+// }
