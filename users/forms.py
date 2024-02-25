@@ -18,13 +18,7 @@ class RegistrationForm(UserCreationForm):
             'last_name',
             'address',
             'contact',
-            'date_of_birth',
-            'pet_picture',
-            'pet_name',
-            'pet_type',
-            'breed',
-            'pet_color',
-            'pet_description'
+            'date_of_birth'
             ]
         widgets = {
             'report_date': forms.TextInput(attrs={'type': 'date'}),

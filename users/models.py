@@ -1,8 +1,7 @@
 from django.db import models
-from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import AbstractUser
-
-fs = FileSystemStorage(location="/media/photos")
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models import CheckConstraint, Q
 
 
 
@@ -26,17 +25,32 @@ class UserModel(AbstractUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     contact = models.CharField(max_length=20, blank=True, null=True)
-    profile_picture = models.ImageField(upload_to=fs, blank=True, null=True)
+    profile_picture = models.ImageField(upload_to="images/", blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     address = models.CharField(max_length=100)
-    pet_picture = models.ImageField(upload_to=fs, default='img1')
-    pet_name = models.CharField(max_length=30, blank=True, null=True)
-    pet_type = models.CharField(max_length=30, blank=True, null=True)
-    breed = models.CharField(max_length=30, blank=True, null=True )
-    pet_color = models.CharField(max_length=40, blank=True, null=True)
-    pet_description = models.TextField(blank=True, null=True)
     
     USERNAME_FIELD = 'username'
 
     def __str__(self):
         return self.username
+    
+class Reviews(models.Model):
+    user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE, default=0)
+    review_message = models.TextField(blank=True)
+    rating = models.FloatField(
+        validators=[MinValueValidator(0.0), MaxValueValidator(5.0),]
+    )
+    creation_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        constraints = (
+            # for checking in the DB
+            CheckConstraint(
+                check=Q(rating__gte=0.0) & Q(rating__lte=5.0),
+                name='reviews_ratings_range'),
+            )
+        
+    def __str__(self):
+        return f"{self.user_id.username} : {self.rating}"
+    
