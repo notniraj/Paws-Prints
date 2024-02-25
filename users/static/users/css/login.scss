@@ -1,0 +1,84 @@
+body{
+    background: url("../images/loginbg.jpg");
+    background-position: center;
+    background-size: cover;
+    color: white;
+}
+
+
+
+body .card{
+    background-color: rgba(248,248,255, .2);
+    backdrop-filter: blur(25px);
+    border-radius: 20px;
+    font-size: 1.1em;
+
+    label{
+        font-weight: 500;
+    }
+
+    a{
+        color: white;
+    }
+
+    a:hover{
+        color: rgba(107, 107, 108);;
+    }
+}
+
+body .card-body{
+    background-color: rgba(248,248,255, .02);
+    backdrop-filter: blur(25px);
+}
+
+
+.input-group {
+    width: 100%;
+
+
+    span{
+        background-color: rgba(220,220,220, .1);
+        backdrop-filter: blur(15px);
+        border: 1px grey solid;
+        border-radius: 10px;
+
+    }
+}
+.input-group input{
+    background-color: rgba(220,220,220, .7);
+    backdrop-filter: blur(15px);
+    border: none;
+}
+
+.input-group input:focus{
+    background-color: rgba(245,245,245, .8);
+}
+
+
+.btn{
+    padding: .6em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    width: 70%;
+    background-color: rgba(220,220,220, .1);
+    color: white;
+    font-weight: 600;
+    border: 1px solid white;
+}
+
+.btn:hover{
+    background-color: rgba(245,245,245, .9);
+    border: 2px solid white;
+    color: black;
+}
+
+.btn:focus{
+    background-color: rgba(245,245,245, .9);
+    border: 2px solid white;
+    color: black;
+}
+
+.alert{
+    background-color: rgba(245,245,245, .5);
+    border: none;
+}
