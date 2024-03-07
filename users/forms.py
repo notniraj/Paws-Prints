@@ -21,9 +21,7 @@ class RegistrationForm(UserCreationForm):
             'date_of_birth'
             ]
         widgets = {
-            'report_date': forms.TextInput(attrs={'type': 'date'}),
-            'start_date': forms.TextInput(attrs={'type': 'date'}),
-            'end_date': forms.TextInput(attrs={'type': 'date'})
+            'date_of_birth': forms.TextInput(attrs={'type': 'date'})
         }
         
         

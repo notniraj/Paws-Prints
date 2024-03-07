@@ -1,8 +1,6 @@
 from django.db import models
 from users.models import UserModel
 
-
-
 # Create your models here.
 class PetModel(models.Model):
     
@@ -14,6 +12,10 @@ class PetModel(models.Model):
     pet_description = models.TextField(blank=True, null=True)
     owner = models.ForeignKey(UserModel, on_delete=models.CASCADE, default=None)
     
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['owner', 'pet_name'], name="unique_owner_pet")
+        ]
     def __str__(self):
         return f"{self.owner} : {self.pet_name}"
     

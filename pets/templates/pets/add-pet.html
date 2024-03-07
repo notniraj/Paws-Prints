@@ -1,0 +1,15 @@
+{% extends "pets/layout.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+    <form enctype="multipart/form-data" action="" method="post" class="d-flex flex-wrap gap-5 p-2 input-group">
+        {% csrf_token %}
+        {{form|crispy}}
+        <div class="btn m-auto">
+            <button type="submit" class="btn btn-primary p-2">
+                Add Pet
+            </button>
+        </div>
+    </form>s
+{% endblock body %}

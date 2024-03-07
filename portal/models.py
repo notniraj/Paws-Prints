@@ -15,3 +15,9 @@ class Listings(models.Model):
     def __str__(self):
         return f"{self.pet_id} : Lost: {self.date_lost}" if self.date_found  == None else f"{self.user_id} : {self.pet_id} : Found Date: {self.date_found}"
 
+
+class ListingComments(models.Model):
+    user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    comment = models.TextField()
+    last_seen_location = models.CharField(blank=True, null=True)
+
