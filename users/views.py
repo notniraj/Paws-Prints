@@ -39,12 +39,12 @@ def signup_view(request):
     if request.method == 'GET':
         form = RegistrationForm()
     else:
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)
+            user = form.save()
             user.password = make_password(form.cleaned_data['password1'])
             user.save()
-            return redirect("", {
+            return render(request, "users/login.html", {
                 "message" : "Registration Succesful."
             })  # Redirect to a login page
     return render(request, 'users/signup.html', {'form': form})

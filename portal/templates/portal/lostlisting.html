@@ -2,22 +2,45 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
+{% block head %}
+    <style>
+        body{
+            background: url({% static '/portal/images/coverart.jpg' %});
+            background-size:cover;
+        }
+        .container{
+            backdrop-filter: blur(10px);
+            width: 100%;
+        }
+        .btn, button{
+            background-color: #f7bfbe ;
+            margin: .5em;
+        }
+        button:hover{
+            background-color: #f75394;
+        }
+        .btn:hover{
+            background-color: #f75394;
+        }
+    </style>
+{% endblock head %}
+
 {% block body %}
 
-    <div class="container position-relative flex flex-column justify-content-center align-items-center text-center">
+    <div class="container position-relative d-flex flex-column justify-content-center align-items-center text-center">
         <h1>Lost Pets</h1>
         <div class="add-listing m-2">
-            <button>Add a Lost Pet</button>
+            <button class="m-2 p-3 rounded-4 text-white border-0">Add a Lost Pet</button>
         </div>
-        <div class="card-container d-flex gap-4 justify-content-center align-items-center flex-wrap overflow-y-scroll">
+        <div class="card-container d-flex gap-4 justify-content-center align-items-center flex-wrap">
             {% for data in lost_data %}
             <div class="card" style="width: 18rem;">
                 <img src="{% get_media_prefix %}{{data.pet_id.pet_profile}}" class="card-img-top" style="height: 12em;" alt="Pet Image">
                 <div class="card-body">
                     <h5 class="card-title">{{data.pet_id.pet_name}}</h5>
                     <p class="card-text">{{data.pet_id.pet_description}}</p>
-                    <a href="{% url 'portal:view-comment' listing_id=data.id %}" class="btn btn-primary">Mark Location</a>
-                    <a href="{% url 'portal:listing-map' listing_id=data.id %}" class="btn btn-primary">Last Seen Locations</a>
+                    <a href="{% url 'portal:view-comment' listing_id=data.id %}" class="btn">Mark Location</a>
+                    <a href="{% url 'portal:listing-map' listing_id=data.id %}" class="btn">Last Seen Locations</a>
                 </div>
             </div>
             {% endfor %}
@@ -28,7 +51,7 @@
                 {% csrf_token %}
                 {{form|crispy}}
                 <div class="btn m-auto">
-                    <button type="submit" class="btn btn-primary p-2">
+                    <button type="submit" class="btn p-2">
                         Add
                     </button>
                 </div>

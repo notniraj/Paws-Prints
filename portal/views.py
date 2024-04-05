@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django import forms 
 
-from .forms import AddListingForm
+from .forms import AddListingForm, SearchForm
 from .models import Listings, ListingComments
 
 from django.contrib.auth.decorators import login_required
@@ -84,3 +84,14 @@ def listing_map(request, listing_id):
 
     return render(request, 'portal/listing-map.html', context)
 
+
+
+def search_listings(request):
+    if request.method == 'GET':
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            # Perform search query on listings
+            search_results = Listings.objects.filter(title__icontains=query)
+            return render(request, 'portal/layout.html', {'search_results': search_results, 'query': query})
+    return render(request, 'portal/layout.html', {'form': form})

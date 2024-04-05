@@ -4,7 +4,6 @@
 {% block head %}
     <style>
         body{
-            overflow: hidden;
             scrollbar-width: 0px;
 
         }
@@ -19,14 +18,26 @@
             width: 50em;
         }
 
-        .comments-container, .comment-modal{
+        .comments-container{
+            background:none;
             backdrop-filter: blur(10px);
+        }
+
+        .comment-modal{
+            backdrop-filter: blur(20px);
         }
         
         .comments-container .card-comments{
             width: 50%;
             scrollbar-width: 0px;
             scrollbar-color: rgb(0,0,0,0);
+        }
+
+        button{
+            background-color: hotpink;
+        }
+        button:hover{
+            background-color: #f75394;
         }
         
         @media only screen and (max-width: 1000px) {
@@ -44,7 +55,7 @@
 {% block body %}
     <section class="post-comments position-relative d-flex flex-column justify-content-start align-items-center rounded-3">
         <h2 class="text-center mt-5">Post Comments</h2>
-        <button id="add-comment" class="m-2 p-3 rounded-4" onclick="toggleModal()">Add Comments & Seen Location</button>
+        <button id="add-comment" class="add-comment m-2 p-3 rounded-4 text-white border-0"  onclick="toggleModal()">Add Comments & Seen Location</button>
         <div class="comments-container d-flex justify-content-center align-items-center gap-5" style="height: 30rem;">
             <div class="card-listing">
                 <div class="card-container d-flex justify-content-center align-items-center flex-wrap">
@@ -81,7 +92,7 @@
             </div>
         </div>
 
-        <div class="comment-modal position-absolute d-flex flex-column justify-content-center align-items-center bg-white p-5 gap-5" style="transform: translateY(-1000px); width: 100%;">
+        <div class="comment-modal position-absolute d-flex flex-column justify-content-center align-items-center p-5 gap-5" style="transform: translateY(-1000px); width: 100%;">
             {% include "portal/map-template.html" %}
             <button class="cancel-modal btn bg-danger" onclick="cancelModal()">Cancel</button>
         </div>

@@ -12,6 +12,6 @@ def add_pet(request):
     else:
         form = PetRegistration(request.POST, request.FILES)
         if form.is_valid():
-            form.save(commit=False)
+            form.save()
             return redirect("pets:index")
     return render(request, 'pets/add-pet.html', {'form':form})
