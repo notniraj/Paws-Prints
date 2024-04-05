@@ -2,43 +2,66 @@
 <!-- map-template.html -->
 <div id="map"></div>
 
+<form id="commentForm" method="post" action="" class="d-flex flex-column justify-content-center align-items-center gap-4" style="width: 25%;">
+    {% csrf_token %}
+    <textarea name="comment" placeholder="Enter your comment" class="form-control"></textarea>
+    <input type="hidden" id="latitudeInput" name="latitude">
+    <input type="hidden" id="longitudeInput" name="longitude">
+    <button type="submit" class="btn btn-primary">Submit Comment</button>
+</form>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
+    crossorigin="">
+</script>
 <script>
     $(document).ready(function() {
-        // Leaflet initialization code
         var map = L.map('map').setView([27.71, 85.322], 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Initialize a global variable to store the marker
-        var marker = L.marker([27.71, 85.322]).addTo(map);
+        var marker = null;
 
-        // Add event listener to capture marker movement
-        marker.on('dragend', function (event) {
-            var markerLocation = marker.getLatLng();
-            // Send markerLocation to Django view via AJAX
-            // Example AJAX call
-            $.ajax({
-                type: "POST",
-                url: "/update-location/",
-                data: {
-                    'latitude': markerLocation.lat,
-                    'longitude': markerLocation.lng,
-                    // Additional data if needed
-                },
-                success: function (data) {
-                    // Handle success response
-                },
-                error: function (xhr, errmsg, err) {
-                    // Handle error response
+        map.on('click', function (event) {
+            var markerLocation = event.latlng;
+            updateMarker(markerLocation);
+            // Update hidden input values
+            $('#latitudeInput').val(markerLocation.lat);
+            $('#longitudeInput').val(markerLocation.lng);
+
+            // Reverse geocode to get location name
+            reverseGeocode(markerLocation.lat, markerLocation.lng);
+        });
+
+        function updateMarker(location) {
+            if (marker !== null) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker(location, { draggable: true }).addTo(map);
+            marker.bindTooltip("Loading...", { sticky: true }).openTooltip();
+            marker.on('dragend', function (event) {
+                var markerLocation = marker.getLatLng();
+                $('#latitudeInput').val(markerLocation.lat);
+                $('#longitudeInput').val(markerLocation.lng);
+                reverseGeocode(markerLocation.lat, markerLocation.lng);
+            });
+        }
+
+        function reverseGeocode(lat, lng) {
+            $.get('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng, function(data) {
+                if (data.display_name) {
+                    // Extract relevant information from display_name
+                    var locationInfo = data.display_name.split(',').slice(0, 3).join(', '); // Customize the number of components as needed
+        
+                    // Set the tooltip content to the extracted location information
+                    marker.setTooltipContent(locationInfo);
+                } else {
+                    marker.setTooltipContent("Latitude: " + lat.toFixed(6) + "<br>Longitude: " + lng.toFixed(6));
                 }
             });
-        });
+        }
     });
-    
 </script>

@@ -1,0 +1,43 @@
+<!-- listing_map.html -->
+{% extends "portal/layout.html" %}
+{% block head %}
+    <style>
+        body{
+            overflow: hidden;
+        }
+        #map { height: 100vh; z-index: 1;}
+
+        .go-back{
+            z-index: 1000;
+        }
+    </style>
+{% endblock head %}
+{% block body %}
+    <div id="map" class="position-relative overflow-hidden z-0">
+        <a href="{% url "portal:listing"%}?action=lost" class="go-back btn btn-primary text-white position-absolute top-0 end-0 m-2 px-4">Go Back</a>
+    </div>
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        $(document).ready(function() {
+            var map = L.map('map').setView([27.71, 85.322], 12);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Loop through comments and create markers for each location
+            {% for comment in comments %}
+                var lat = {{ comment.latitude }};
+                var lng = {{ comment.longitude }};
+                var marker = L.marker([lat, lng]).addTo(map);
+                var tooltipContent = "{{ comment.user_id }} : {{ comment.comment }}";
+                marker.bindTooltip(tooltipContent, { sticky: true }).openTooltip();
+            {% endfor %}
+        });
+    </script>
+{% endblock body %}
+    
+

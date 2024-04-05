@@ -1,0 +1,116 @@
+{% extends "portal/layout.html" %}
+{% load static %}
+
+{% block head %}
+    <style>
+        body{
+            overflow: hidden;
+            scrollbar-width: 0px;
+
+        }
+        .post-comments{
+            background: url({% static '/portal/images/commentbg.jpg' %});
+            background-size:cover;
+            height:100vh;
+            backdrop-filter:blur(10px)
+        }
+        #map{
+            height: 20em;
+            width: 50em;
+        }
+
+        .comments-container, .comment-modal{
+            backdrop-filter: blur(10px);
+        }
+        
+        .comments-container .card-comments{
+            width: 50%;
+            scrollbar-width: 0px;
+            scrollbar-color: rgb(0,0,0,0);
+        }
+        
+        @media only screen and (max-width: 1000px) {
+            .comments-container {
+                flex-direction: column;
+
+            }
+            .comments-container .card-comments{
+                width: auto;
+            }
+        }
+    </style>
+{% endblock head %}
+
+{% block body %}
+    <section class="post-comments position-relative d-flex flex-column justify-content-start align-items-center rounded-3">
+        <h2 class="text-center mt-5">Post Comments</h2>
+        <button id="add-comment" class="m-2 p-3 rounded-4" onclick="toggleModal()">Add Comments & Seen Location</button>
+        <div class="comments-container d-flex justify-content-center align-items-center gap-5" style="height: 30rem;">
+            <div class="card-listing">
+                <div class="card-container d-flex justify-content-center align-items-center flex-wrap">
+                    {% for listing in listing %}
+                    <div class="card d-flex flex-column justify-content-center align-content-center" style="width: 18rem;">
+                        <img src="{% get_media_prefix %}{{listing.pet_id.pet_profile}}" class="card-img-top" style="height: 13em;" alt="Pet Image">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <h5 class="card-title">{{listing.pet_id.pet_name}}</h5>
+                            <p class="card-text">{{listing.pet_id.pet_description}}</p>
+                            <a href="{% url 'portal:listing-map' listing_id=listing.id %}" class="btn btn-primary">Show Commented Locations</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-comments d-flex flex-column justify-content-start align-content-center overflow-y-scroll rounded-3" style="height: 100%;">
+                {% for comment in comments %}
+                    <div class="comment-section py-2 px-5 d-flex justify-content-start align-items-start row-gap-5">
+                        <div class="user-circle" style="border-radius: 100px;">
+                            {% if comment.user_id.profile_picture != "" %}
+                                <img src="{% get_media_prefix %}{{comment.user_id.profile_picture}}" class="card-img-top" style="height: 2em;" alt="Profile Image">
+                            {% else  %}
+                                <img src= {% static '/portal/images/default-profile.jpg' %} class="card-img-top mx-1" style="height: 2em; width: 2.2em; border-radius: 100%;" alt="Profile Image">
+                            {% endif %}
+                        </div>
+                        <div class="comment">
+                            <h4>{{comment.user_id.username}}</h4>
+                            <h6>{{comment.created_at}}</h6>
+                            <p>{{comment.comment}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+
+        <div class="comment-modal position-absolute d-flex flex-column justify-content-center align-items-center bg-white p-5 gap-5" style="transform: translateY(-1000px); width: 100%;">
+            {% include "portal/map-template.html" %}
+            <button class="cancel-modal btn bg-danger" onclick="cancelModal()">Cancel</button>
+        </div>
+    </section>
+    
+
+    {% block script %}
+        <script>
+            function toggleModal(){
+                modal = document.querySelector('.comment-modal')
+                
+                modal.animate(
+                { transform: 'translateY(0)'}, 
+                {
+                    duration: 400,
+                    fill: 'forwards'
+                });
+                
+            }
+
+            function cancelModal(){
+                modal = document.querySelector('.comment-modal')
+                modal.animate(
+                    { transform: 'translateY(-1000px)'}, 
+                    {
+                        duration: 400,
+                        fill: 'forwards'
+                    });
+            }
+        </script>
+    {% endblock script %}
+{% endblock body %}

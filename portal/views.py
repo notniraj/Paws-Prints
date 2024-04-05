@@ -3,9 +3,11 @@ from django.http import HttpResponse
 from django import forms 
 
 from .forms import AddListingForm
-from .models import Listings
+from .models import Listings, ListingComments
 
-# Create your views here.
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def index(request):
     return render(request, "portal/index.html")
 
@@ -49,4 +51,36 @@ def add_listing(request):
                 "message" : "Listing Added."
             })
     return render(request, 'portal/add-listing.html', {'form': form})
+
+
+def add_comment(request, listing_id):
+    if request.method == 'POST':
+        user_id = request.user
+        comment_text = request.POST.get('comment')
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
+        listing_instance = Listings.objects.get(pk=listing_id)
+        ListingComments.objects.create(user_id=user_id, listing_id=listing_instance, comment=comment_text, latitude=latitude, longitude=longitude)
+        return redirect('portal:view-comment', listing_id=listing_id)
+    else:
+        listing = Listings.objects.filter(id=listing_id)
+        comments = ListingComments.objects.filter(listing_id=listing_id)
+        
+        context = {
+            'comments': comments,
+            'listing': listing,
+        }
+        return render(request, 'portal/comment.html', context)
+
+def listing_map(request, listing_id):
+    # Fetch comments associated with the specific listing_id
+    comments = ListingComments.objects.filter(listing_id=listing_id)
+
+    # Pass comments data to the template context
+    context = {
+        'comments': comments,
+        'listing_id': listing_id,
+    }
+
+    return render(request, 'portal/listing-map.html', context)
 

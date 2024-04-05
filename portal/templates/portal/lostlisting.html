@@ -16,7 +16,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{data.pet_id.pet_name}}</h5>
                     <p class="card-text">{{data.pet_id.pet_description}}</p>
-                    <a href="#" class="btn btn-primary">Share Information</a>
+                    <a href="{% url 'portal:view-comment' listing_id=data.id %}" class="btn btn-primary">Mark Location</a>
+                    <a href="{% url 'portal:listing-map' listing_id=data.id %}" class="btn btn-primary">Last Seen Locations</a>
                 </div>
             </div>
             {% endfor %}
