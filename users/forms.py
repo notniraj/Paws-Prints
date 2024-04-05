@@ -1,7 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
-from .models import UserModel
+from .models import UserModel, ReviewsModel
+from django.forms import ModelForm
 
 from django.contrib.auth.forms import forms
+
 
 class RegistrationForm(UserCreationForm):
 
@@ -23,5 +25,16 @@ class RegistrationForm(UserCreationForm):
         widgets = {
             'date_of_birth': forms.TextInput(attrs={'type': 'date'})
         }
+
+
+class ReviewsForm(ModelForm):
+    
+    class Meta:
+        model = ReviewsModel
+        fields = '__all__'
         
+        widgets = {
+            
+        }
+    
         

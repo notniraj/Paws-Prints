@@ -16,6 +16,7 @@ class PetModel(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['owner', 'pet_name'], name="unique_owner_pet")
         ]
+        
     def __str__(self):
         return f"{self.owner} : {self.pet_name}"
     

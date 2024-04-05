@@ -9,3 +9,10 @@ class AddListingForm(ModelForm):
     class Meta:
         model = Listings
         fields = '__all__'
+        
+        
+        widgets = {
+            'date_found': forms.TextInput(attrs={'type': 'date'}),
+            'date_lost': forms.TextInput(attrs={'type': 'date'})
+        }
+        

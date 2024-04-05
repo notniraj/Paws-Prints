@@ -34,7 +34,7 @@ class UserModel(AbstractUser):
     def __str__(self):
         return self.username
     
-class Reviews(models.Model):
+class ReviewsModel(models.Model):
     user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE, default=0)
     review_message = models.TextField(blank=True)
     rating = models.FloatField(

@@ -1,9 +1,38 @@
 {% extends "portal/layout.html" %}
 {% load crispy_forms_tags %}
-{% load x %}
-
+{% load static %}
 
 {% block body %}
-    
-{{form}}
+
+    <div class="container position-relative flex flex-column justify-content-center align-items-center text-center">
+        <h1>Lost Pets</h1>
+        <div class="add-listing m-2">
+            <button>Add a Lost Pet</button>
+        </div>
+        <div class="card-container d-flex gap-4 justify-content-center align-items-center flex-wrap overflow-y-scroll">
+            {% for data in lost_data %}
+            <div class="card" style="width: 18rem;">
+                <img src="{% get_media_prefix %}{{data.pet_id.pet_profile}}" class="card-img-top" style="height: 12em;" alt="Pet Image">
+                <div class="card-body">
+                    <h5 class="card-title">{{data.pet_id.pet_name}}</h5>
+                    <p class="card-text">{{data.pet_id.pet_description}}</p>
+                    <a href="#" class="btn btn-primary">Share Information</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="add-modal d-flex flex-column justify-content-center align-items-center">
+            <form action="" method="post" class="d-flex flex-wrap gap-5 p-2 input-group">
+                {% csrf_token %}
+                {{form|crispy}}
+                <div class="btn m-auto">
+                    <button type="submit" class="btn btn-primary p-2">
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 {% endblock body %}

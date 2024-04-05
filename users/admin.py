@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import UserModel
 from .models import UserType
-from .models import Reviews
+from .models import ReviewsModel
 # Register your models here.
 class ReviewsAdmin(admin.ModelAdmin):
     list_display = ("id", "user_id", "review_message", "rating")
@@ -15,4 +15,4 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.register(UserModel, UserAdmin)
 admin.site.register(UserType, UserTypeAdmin)
-admin.site.register(Reviews, ReviewsAdmin)
+admin.site.register(ReviewsModel, ReviewsAdmin)

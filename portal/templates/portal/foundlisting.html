@@ -1,0 +1,24 @@
+{% extends "portal/layout.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block body %}
+
+    <div class="container flex flex-column justify-content-center align-items-center text-center">
+        <h1>Found Pets</h1>
+        <div class="card-container">
+            {% for data in found_data %}
+            <div class="card" style="width: 18rem;">
+                <img src="{% get_media_prefix %}{{data.pet_id.pet_profile}}" class="card-img-top" alt="Pet Image">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+{% endblock body %}
