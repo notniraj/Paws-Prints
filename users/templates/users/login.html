@@ -19,7 +19,7 @@
                 <h5>Help guide the paws back home!</h5>
             </div>
             <div class="card-body">
-                <form enctype="multipart/form-data" action="{% url "users:login" %}" method="POST" class="needs-validation " novalidate>
+                <form enctype="multipart/form-data" action="{% url 'users:login' %}?next={{ next }}" method="POST" class="needs-validation" novalidate>
                     {% csrf_token %}
                     <div class="m-3">
                         <label for="validationDefaultUsername" class="form-label">Username</label>

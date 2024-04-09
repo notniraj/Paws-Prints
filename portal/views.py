@@ -7,10 +7,11 @@ from .models import Listings, ListingComments
 
 from django.contrib.auth.decorators import login_required
 
-@login_required
+@login_required(login_url='users:login')
 def index(request):
     return render(request, "portal/index.html")
 
+@login_required(login_url='users:login')
 def listings(request):
     action = request.GET.get('action', None)
     if action == 'lost':
@@ -40,6 +41,7 @@ def listings(request):
         }
         return render(request, "portal/foundlisting.html", found_context)
 
+@login_required(login_url='users:login')
 def add_listing(request):
     if request.method == 'GET':
         form = AddListingForm()
@@ -52,7 +54,7 @@ def add_listing(request):
             })
     return render(request, 'portal/add-listing.html', {'form': form})
 
-
+@login_required(login_url='users:login')
 def add_comment(request, listing_id):
     if request.method == 'POST':
         user_id = request.user
@@ -71,7 +73,8 @@ def add_comment(request, listing_id):
             'listing': listing,
         }
         return render(request, 'portal/comment.html', context)
-
+    
+@login_required(login_url='users:login')
 def listing_map(request, listing_id):
     # Fetch comments associated with the specific listing_id
     comments = ListingComments.objects.filter(listing_id=listing_id)
@@ -85,7 +88,7 @@ def listing_map(request, listing_id):
     return render(request, 'portal/listing-map.html', context)
 
 
-
+@login_required(login_url='users:login')
 def search_listings(request):
     if request.method == 'GET':
         form = SearchForm(request.GET)

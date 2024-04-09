@@ -19,7 +19,7 @@
                 <h5>Help guide the paws back home!</h5>
             </div>
             <div class="card-body flex justify-content-center align-items-center">
-                <form action="" method="post" class="d-flex flex-wrap gap-5 p-2 input-group">
+                <form enctype="multipart/form-data" action="" method="post" class="d-flex flex-wrap gap-5 p-2 input-group">
                     {% csrf_token %}
                     {{form|crispy}}
                     <div class="btn m-auto">

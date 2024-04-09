@@ -22,3 +22,5 @@ class ListingComments(models.Model):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
+    upvotes = models.IntegerField(null=True, blank=True)
+    downvotes = models.IntegerField(null=True, blank=True)

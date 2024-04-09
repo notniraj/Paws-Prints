@@ -20,7 +20,6 @@ class UserModel(AbstractUser):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=150, unique=True)
     password = models.CharField(max_length=128)
-    
     user_type = models.ForeignKey(UserType, on_delete=models.CASCADE, default=1)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)

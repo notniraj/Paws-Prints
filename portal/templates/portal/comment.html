@@ -61,7 +61,7 @@
                 <div class="card-container d-flex justify-content-center align-items-center flex-wrap">
                     {% for listing in listing %}
                     <div class="card d-flex flex-column justify-content-center align-content-center" style="width: 18rem;">
-                        <img src="{% get_media_prefix %}{{listing.pet_id.pet_profile}}" class="card-img-top" style="height: 13em;" alt="Pet Image">
+                        <img src="{% get_media_prefix %}{{listing.pet_id.pet_profile}}" class="card-img-top" style="height: 12em;" alt="Pet Image">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
                             <h5 class="card-title">{{listing.pet_id.pet_name}}</h5>
                             <p class="card-text">{{listing.pet_id.pet_description}}</p>
@@ -83,6 +83,7 @@
                         </div>
                         <div class="comment">
                             <h4>{{comment.user_id.username}}</h4>
+                            <h6>Contact: {{comment.user_id.contact}}</h6>
                             <h6>{{comment.created_at}}</h6>
                             <p>{{comment.comment}}</p>
                         </div>
