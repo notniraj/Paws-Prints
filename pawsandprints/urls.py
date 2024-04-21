@@ -23,7 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("portal/", include("portal.urls")),
     path("", include("users.urls")),
-    path("pets/", include("pets.urls"))
+    path("pets/", include("pets.urls")),
+    path('ratings/', include('star_ratings.urls', namespace='ratings')),
 ]
 
 if settings.DEBUG:

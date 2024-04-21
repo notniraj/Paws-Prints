@@ -14,5 +14,6 @@ urlpatterns = [
     # Add URL patterns for editing and deleting pets
     path('edit-pet/<int:pet_id>/', views.user_profile, name='edit-pet'),
     path('delete-pet/<int:pet_id>/', views.user_profile, name='delete-pet'),
+    path('change-password/', views.change_password, name='change-password'),
 ]
 

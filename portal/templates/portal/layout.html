@@ -1,4 +1,6 @@
 {% load static %}
+{% load crispy_forms_tags %}
+{% load ratings %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +22,8 @@
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin=""/>
 
+    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+
     <style>
         *{
             box-sizing: border-box;
@@ -34,6 +38,45 @@
             background: none;
             backdrop-filter: blur(20px);
         }
+        .searchbar {
+            display: none;
+        }
+        
+        /* Show search bar when active class is present */
+        .searchbar.active {
+            display: flex;
+        }
+
+        .input-text:focus{
+            box-shadow: 0px 0px 0px;
+            border-color:#f8c146;
+            outline: 0px;
+            width: 100%;
+        }
+        #search-form{
+            width: 50%;
+        }
+        #search-results{
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #search-results ul{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap:1em;
+            text-decoration: none;
+
+            list-style-type: none;
+        }
+
+        #search-results ul a{
+            text-decoration: none;
+        }
     </style>
 
     {% block head %}
@@ -41,17 +84,15 @@
 
 </head>
 <body>
-    <div class="searchbar position-absolute d-flex justify-content-center align-items-center">
-        <h1>Search Results for "{{ query }}"</h1>
-        {% if search_results %}
-            <ul>
-            {% for listing in search_results %}
-                <li>{{ listing.title }}</li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>No results found.</p>
-        {% endif %}
+    <div class="searchbar position-absolute flex-column gap-4 justify-content-center align-items-center" style=" width:100vw; height: 100vh; z-index: 2000; backdrop-filter: blur(10px);" id="searchbar">
+        <button class="close-btn rounded-5 btn btn-danger px-2 py-1" style="top:0; right: 0;">&times;</button>
+        <form id="search-form" action="{% url "portal:search-listings" %}" method="get">
+            <input id="searchQuery" type="text" name="query" placeholder="Search..." class="form-control input-text text-center rounded-5 py-3" autofocus>
+            <button type="submit" style="display: none;"></button>
+        </form>
+        <div id="search-results">
+            <!-- Search results will be dynamically inserted here -->
+        </div>
     </div>
     <header id="header" class="">
         <nav class="navbar sticky-top navbar-expand-lg p-2">
@@ -77,21 +118,21 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"> <i class="fa-solid fa-comment-medical fa-shake p-1"></i></i>Pet Care</a>
+                        <a class="nav-link" href="{% url "portal:petcare" %}"> <i class="fa-solid fa-comment-medical fa-shake p-1"></i></i>Pet Care</a>
                     </li>
                     <li class="nav-item">
                         
                     </li>
                 </ul>
                 <div class="icons d-flex justify-content-center align-items-center gap-1">
-                    <h6>{{request.user.username}}</h6>
-                    <a href="{% url "users:user-profile" %}" class="btn btn-outline-primary p-2">
+                    <h6 class="pt-3">{{request.user.username}}</h6>
+                    <a href="{% url "users:user-profile" %}" class="d-flex justify-content-center align-items-center btn btn-outline-secondary py-1 px-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 11q.825 0 1.413-.588Q14 9.825 14 9t-.587-1.413Q12.825 7 12 7q-.825 0-1.412.587Q10 8.175 10 9q0 .825.588 1.412Q11.175 11 12 11Zm0 2q-1.65 0-2.825-1.175Q8 10.65 8 9q0-1.65 1.175-2.825Q10.35 5 12 5q1.65 0 2.825 1.175Q16 7.35 16 9q0 1.65-1.175 2.825Q13.65 13 12 13Zm0 11q-2.475 0-4.662-.938q-2.188-.937-3.825-2.574Q1.875 18.85.938 16.663Q0 14.475 0 12t.938-4.663q.937-2.187 2.575-3.825Q5.15 1.875 7.338.938Q9.525 0 12 0t4.663.938q2.187.937 3.825 2.574q1.637 1.638 2.574 3.825Q24 9.525 24 12t-.938 4.663q-.937 2.187-2.574 3.825q-1.638 1.637-3.825 2.574Q14.475 24 12 24Zm0-2q1.8 0 3.375-.575T18.25 19.8q-.825-.925-2.425-1.612q-1.6-.688-3.825-.688t-3.825.688q-1.6.687-2.425 1.612q1.3 1.05 2.875 1.625T12 22Zm-7.7-3.6q1.2-1.3 3.225-2.1q2.025-.8 4.475-.8q2.45 0 4.463.8q2.012.8 3.212 2.1q1.1-1.325 1.713-2.95Q22 13.825 22 12q0-2.075-.788-3.887q-.787-1.813-2.15-3.175q-1.362-1.363-3.175-2.151Q14.075 2 12 2q-2.05 0-3.875.787q-1.825.788-3.187 2.151Q3.575 6.3 2.788 8.113Q2 9.925 2 12q0 1.825.6 3.463q.6 1.637 1.7 2.937Z"/></svg>
                     </a>
-                    <button class="btn btn-outline-primary p-2">
+                    <button class="d-flex justify-content-center align-items-center btn btn-outline-secondary py-1 px-2 search-btn">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
-                    <a class="btn btn-outline-danger p-2" href=" {% url "users:logout" %}"> <i class="fa-solid fa-arrow-right-from-bracket fa-beat fa-rotate-180 fa-sm p-1"></i></i></i></a>
+                    <a class="d-flex justify-content-center align-items-center btn btn-outline-danger py-2 px-2" href=" {% url "users:logout" %}"> <i class="fa-solid fa-arrow-right-from-bracket fa-beat fa-rotate-180 fa-sm p-1"></i></i></i></a>
                 </div>
                 </div>
             </div>
@@ -112,11 +153,101 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script
+    src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
 
-    
     <script src="https://kit.fontawesome.com/16219efeb4.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchBtn = document.querySelector(".search-btn");
+            const searchbar = document.getElementById("searchbar");
+            const searchQuery = document.getElementById("searchQuery");
+            const typed = document.getElementById("search-query");
+            const closeBtn = document.querySelector("#searchbar .close-btn");
+            const searchForm = document.getElementById("search-form");
+            const searchResults = document.getElementById("search-results");
+
+            searchBtn.addEventListener("click", function () {
+                searchbar.classList.toggle("active");
+            });
+
+            closeBtn.addEventListener("click", function () {
+                searchbar.classList.remove("active");
+            });
+
+            // Close search bar on Escape key press
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    searchbar.classList.remove("active");
+                }
+            });
+
+            searchForm.addEventListener("submit", function (event) {
+                event.preventDefault(); // Prevent default form submission behavior
+        
+                const formData = new FormData(searchForm);
+                const query = formData.get("query").trim();
+        
+                if (query !== "") {
+                    fetch(`search/?query=${query}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            displaySearchResults(data);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+            });
+        
+            function displaySearchResults(results) {
+                searchResults.innerHTML = ''; // Clear previous results
+        
+                if (results.length > 0) {
+                    const ul = document.createElement('ul');
+                    results.forEach(result => {
+                        const li = document.createElement('li');
+                        const link = document.createElement('a');
+                        link.href = `listing/${result.id}`;
+                        const div = document.createElement('div');
+                        // Apply styles to the div
+                        div.style.border = '1px solid #ccc';
+                        div.style.borderRadius = '8px';
+                        div.style.padding = '10px';
+                        div.style.marginBottom = '10px';
+                
+                        // Create paragraph elements for owner name and pet name
+                        const ownerName = document.createElement('p');
+                        ownerName.textContent = `Owner: ${result.owner}`; // Assuming result.owner_name contains the owner's name
+                
+                        const petName = document.createElement('p');
+                        petName.textContent = `Pet Name: ${result.pet_name}`; // Assuming result.pet_name contains the pet's name
+
+                        div.appendChild(ownerName);
+                        div.appendChild(petName);
+
+                        // Append the div to the link and the link to the list item
+                        link.appendChild(div);
+                        li.appendChild(link);
+                        ul.appendChild(li);
+                    });
+                    searchResults.appendChild(ul);
+                } else {
+                    searchResults.textContent = 'No results found.';
+                }
+            }
+        });
+    </script>
 </body>
 </html>

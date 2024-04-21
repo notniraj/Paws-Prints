@@ -33,6 +33,46 @@
             scrollbar-color: rgb(0,0,0,0);
         }
 
+         /* Improved aesthetics for cards */
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img-top {
+            border-radius: 10px 10px 0 0;
+            object-fit: cover;
+            height: 12em;
+        }
+
+        /* Improved aesthetics for comment section */
+        .comment-section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-section h4 {
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+
+        .comment-section h6 {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .comment-section p {
+            font-size: 16px;
+        }
+
         button{
             background-color: hotpink;
         }
@@ -61,10 +101,12 @@
                 <div class="card-container d-flex justify-content-center align-items-center flex-wrap">
                     {% for listing in listing %}
                     <div class="card d-flex flex-column justify-content-center align-content-center" style="width: 18rem;">
-                        <img src="{% get_media_prefix %}{{listing.pet_id.pet_profile}}" class="card-img-top" style="height: 12em;" alt="Pet Image">
+                        <img src="{% get_media_prefix %}{{listing.pet.pet_profile}}" class="card-img-top" style="max-width: 100%; max-height: 12em; object-fit: contain; height: auto;" alt="Pet Image">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                            <h5 class="card-title">{{listing.pet_id.pet_name}}</h5>
-                            <p class="card-text">{{listing.pet_id.pet_description}}</p>
+                            <h5 class="card-title">{{listing.pet.pet_name}}</h5>
+                            <p class="card-title"><strong>Owner:</strong> {{listing.user_id.first_name}}</p>
+                            <p class="card-title"><strong>Contact:</strong> {{listing.user_id.contact}}</p>
+                            <p class="card-text"><strong>Description: </strong>{{listing.pet.pet_description}}</p>
                             <a href="{% url 'portal:listing-map' listing_id=listing.id %}" class="btn btn-primary">Show Commented Locations</a>
                         </div>
                     </div>
@@ -76,14 +118,13 @@
                     <div class="comment-section py-2 px-5 d-flex justify-content-start align-items-start row-gap-5">
                         <div class="user-circle" style="border-radius: 100px;">
                             {% if comment.user_id.profile_picture != "" %}
-                                <img src="{% get_media_prefix %}{{comment.user_id.profile_picture}}" class="card-img-top" style="height: 2em;" alt="Profile Image">
+                                <img src="{% get_media_prefix %}{{comment.user_id.profile_picture}}" class="card-img-top mx-1" style="height: 2em; width: 2.2em; border-radius: 100%;" alt="Profile Image">
                             {% else  %}
                                 <img src= {% static '/portal/images/default-profile.jpg' %} class="card-img-top mx-1" style="height: 2em; width: 2.2em; border-radius: 100%;" alt="Profile Image">
                             {% endif %}
                         </div>
                         <div class="comment">
                             <h4>{{comment.user_id.username}}</h4>
-                            <h6>Contact: {{comment.user_id.contact}}</h6>
                             <h6>{{comment.created_at}}</h6>
                             <p>{{comment.comment}}</p>
                         </div>

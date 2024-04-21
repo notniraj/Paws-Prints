@@ -1,0 +1,73 @@
+<!-- pet_care_tips.html -->
+{% extends "portal/layout.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'users/css/pet_care_tips.css' %}">
+{% endblock head %}
+
+{% block body %}
+    <section class="pet-care-tips">
+        <div class="container">
+            <h1>Pet Care Tips</h1>
+            {% for tip in tips %}
+                <div class="tip-card">
+                    <h2>{{ tip.title }}</h2>
+                    <p>{{ tip.content }}</p>
+                    <p>Posted by: {{ tip.author }}</p>
+                    <p>Comments:</p>
+                    {% for comment in tip.comments.all %}
+                        <div class="comment">
+                            <p>{{ comment.content }} - {{ comment.author }}</p>
+                        </div>
+                    {% endfor %}
+                    <button class="btn btn-primary add-comment-btn" data-tip-id="{{ tip.id }}">Add Comment</button>
+                    <div class="add-comment-form" id="add-comment-form-{{ tip.id }}" style="display: none;">
+                        <form method="post" action="{% url 'add_comment' tip.id %}">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="add-tip-form" style="display: none;">
+                <h2>Add Pet Care Tip</h2>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <button class="btn btn-primary add-tip-btn">Add Tip</button>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addTipBtn = document.querySelector('.add-tip-btn');
+            const addTipForm = document.querySelector('.add-tip-form');
+
+            addTipBtn.addEventListener('click', function() {
+                addTipForm.style.display = 'block';
+            });
+
+            const addCommentBtns = document.querySelectorAll('.add-comment-btn');
+
+            addCommentBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tipId = btn.dataset.tipId;
+                    const commentForm = document.getElementById(`add-comment-form-${tipId}`);
+                    if (commentForm.style.display === 'none') {
+                        commentForm.style.display = 'block';
+                    } else {
+                        commentForm.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock script %}

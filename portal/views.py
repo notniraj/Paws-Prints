@@ -1,27 +1,35 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
-from django import forms 
+from django.http import JsonResponse
+from django.db.models import Q
 
-from .forms import AddListingForm, SearchForm
+from .forms import AddListingForm
 from .models import Listings, ListingComments
 
 from django.contrib.auth.decorators import login_required
+from .models import PetCareTip
+from .forms import PetCareTipForm, CommentForm
+
 
 @login_required(login_url='users:login')
 def index(request):
-    return render(request, "portal/index.html")
+    if request.method == 'GET': 
+        recent_lost_listings = Listings.objects.filter(date_found__isnull=True).order_by('-date_lost')[:5]
+    return render(request, "portal/index.html", {'recent_lost_listings': recent_lost_listings})
 
 @login_required(login_url='users:login')
 def listings(request):
     action = request.GET.get('action', None)
+    user = request.user
     if action == 'lost':
         if request.method == 'GET':
-            form = AddListingForm()
+            form = AddListingForm(user=user)
         else:
             form = AddListingForm(request.POST)
             if form.is_valid():
-                form.save()
-                form = AddListingForm()
+                listing = form.save(commit=False)
+                listing.user_id = user
+                listing.save()
+                form = AddListingForm(user = request.user)
                 lost_data = Listings.objects.filter(date_found__isnull=True)
             return render(request, "portal/lostlisting.html", {
                     "message" : "Listing Added.",
@@ -89,12 +97,39 @@ def listing_map(request, listing_id):
 
 
 @login_required(login_url='users:login')
-def search_listings(request):
-    if request.method == 'GET':
-        form = SearchForm(request.GET)
-        if form.is_valid():
-            query = form.cleaned_data['query']
+def search_listing(request):
+    if request.method == 'GET' and 'query' in request.GET:
+        query = request.GET.get('query').strip()
+        if query:
             # Perform search query on listings
-            search_results = Listings.objects.filter(title__icontains=query)
-            return render(request, 'portal/layout.html', {'search_results': search_results, 'query': query})
-    return render(request, 'portal/layout.html', {'form': form})
+            search_results = Listings.objects.filter(pet__pet_name__icontains=query)
+            results = [{'id': listing.id, 'owner': listing.user_id.username, 'pet_name': listing.pet.pet_name} for listing in search_results]
+            return JsonResponse(results, safe=False)
+    # If no results found or other error occurs, return an empty list as JSON
+    return JsonResponse([], safe=False)
+
+
+@login_required(login_url='users:login')
+def petcare(request):
+    return render(request, 'portal/careandtips.html')
+
+
+@login_required(login_url='users:login')
+def pet_care_tips(request):
+    tips = PetCareTip.objects.all()
+    tip_form = PetCareTipForm()
+    comment_form = CommentForm()
+    return render(request, "users/pet_care_tips.html", {'tips': tips, 'tip_form': tip_form, 'comment_form': comment_form})
+
+@login_required(login_url='users:login')
+def add_pet_care_tip(request):
+    if request.method == 'POST':
+        form = PetCareTipForm(request.POST)
+        if form.is_valid():
+            tip = form.save(commit=False)
+            tip.author = request.user
+            tip.save()
+            return redirect('pet_care_tips')
+    else:
+        form = PetCareTipForm()
+    return render(request, 'users/add_pet_care_tip.html', {'form': form})
