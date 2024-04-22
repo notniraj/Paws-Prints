@@ -114,22 +114,24 @@ def petcare(request):
     return render(request, 'portal/careandtips.html')
 
 
-@login_required(login_url='users:login')
-def pet_care_tips(request):
-    tips = PetCareTip.objects.all()
-    tip_form = PetCareTipForm()
-    comment_form = CommentForm()
-    return render(request, "users/pet_care_tips.html", {'tips': tips, 'tip_form': tip_form, 'comment_form': comment_form})
+# Future Work:
 
-@login_required(login_url='users:login')
-def add_pet_care_tip(request):
-    if request.method == 'POST':
-        form = PetCareTipForm(request.POST)
-        if form.is_valid():
-            tip = form.save(commit=False)
-            tip.author = request.user
-            tip.save()
-            return redirect('pet_care_tips')
-    else:
-        form = PetCareTipForm()
-    return render(request, 'users/add_pet_care_tip.html', {'form': form})
+# @login_required(login_url='users:login')
+# def pet_care_tips(request):
+#     tips = PetCareTip.objects.all()
+#     tip_form = PetCareTipForm()
+#     comment_form = CommentForm()
+#     return render(request, "users/pet_care_tips.html", {'tips': tips, 'tip_form': tip_form, 'comment_form': comment_form})
+
+# @login_required(login_url='users:login')
+# def add_pet_care_tip(request):
+#     if request.method == 'POST':
+#         form = PetCareTipForm(request.POST)
+#         if form.is_valid():
+#             tip = form.save(commit=False)
+#             tip.author = request.user
+#             tip.save()
+#             return redirect('pet_care_tips')
+#     else:
+#         form = PetCareTipForm()
+#     return render(request, 'users/add_pet_care_tip.html', {'form': form})

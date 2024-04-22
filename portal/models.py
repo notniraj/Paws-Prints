@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.conf import settings
 from pets.models import PetModel
 
-# Create your models here.
+# Listings Model
 class Listings(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_lost = models.DateField(null=False)
@@ -15,7 +15,7 @@ class Listings(models.Model):
     def __str__(self):
         return f"{self.pet} : Lost: {self.date_lost}" if self.date_found  == None else f"{self.user_id} : {self.pet} : Found Date: {self.date_found}"
 
-
+# Listing Comments Model
 class ListingComments(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     listing_id = models.ForeignKey(Listings, on_delete=models.CASCADE, null=True, blank=True)
@@ -27,7 +27,7 @@ class ListingComments(models.Model):
     downvotes = models.IntegerField(null=True, blank=True)
 
 
-
+# Pet Care Tip Model (Future Work)
 class PetCareTip(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()

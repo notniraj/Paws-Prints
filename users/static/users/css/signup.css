@@ -30,6 +30,10 @@ body .card-body {
   padding: 0.5em;
 }
 
+.mb-3{
+  width: 80%;
+}
+
 .input-group .asteriskField {
   border: none;
   background: none;

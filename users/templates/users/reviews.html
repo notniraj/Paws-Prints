@@ -1,5 +1,6 @@
 {% extends "portal/layout.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block head %}
     <style>
@@ -57,7 +58,7 @@
                         {% if review.user.profile_picture %}
                             <img src="{{ review.user.profile_picture.url }}" alt="Profile Picture" class="profile-image">
                         {% else %}
-                            <div class="profile-image" style="background-color: #ccc;"></div>
+                            <img src= {% static '/portal/images/default-profile.jpg' %} class="profile-image" alt="Default Picture">
                         {% endif %}
                         <div>
                             <p><strong>User:</strong> {{ review.user.first_name }} {{ review.user.last_name }}</p>

@@ -18,14 +18,46 @@
                 <i class="fa-solid fa-paw"></i>
                 <h5>Help guide the paws back home!</h5>
             </div>
-            <div class="card-body flex justify-content-center align-items-center">
-                <form enctype="multipart/form-data" action="" method="post" class="d-flex flex-wrap gap-5 p-2 input-group">
+            <div class="card-body d-flex justify-content-center align-items-center">
+                <form enctype="multipart/form-data" action="" method="post" class="row g-5 ms-4">
                     {% csrf_token %}
-                    {{form|crispy}}
-                    <div class="btn m-auto">
-                        <button type="submit" class="btn btn-primary p-2">
-                            Register
-                        </button>
+                    <div class="col-md-6">
+                        <div class="input-group mb-3 w-100">
+                            {{ form.username|as_crispy_field }}
+                        </div>
+                        <div class="input-group mb-3 w-100">
+                            {{ form.email|as_crispy_field }}
+                        </div>
+                        <div class="input-group mb-3 w-100">
+                            {{ form.password1|as_crispy_field }}
+                        </div>
+                        <div class="input-group mb-3 w-100">
+                            {{ form.password2|as_crispy_field }}
+                        </div>
+                        <div class="input-group mb-3 w-100">
+                            {{ form.first_name|as_crispy_field }}
+                        </div>
+                        <div class="input-group mb-3 w-100">
+                            {{ form.last_name|as_crispy_field }}
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group mb-3 w-100">
+                            {{ form.profile_picture|as_crispy_field }}
+                        </div>
+                        <div class="input-group mb-3 w-100">
+                            {{ form.address|as_crispy_field }}
+                        </div>
+                        <div class="input-group mb-3 w-100">
+                            {{ form.contact|as_crispy_field }}
+                        </div>
+                        <div class="input-group mb-3 w-100 text-center">
+                            {{ form.date_of_birth|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="col-12 w-100">
+                        <button type="submit" class="btn btn-primary py-3 px-5 m-2 w-25">Register</button>
                     </div>
                 </form>
             </div>
@@ -35,43 +67,3 @@
     <script src="https://kit.fontawesome.com/16219efeb4.js" crossorigin="anonymous"></script>
 </body>
 </html>
-
-
-{% comment %} <form action="" method="POST">
-    {% csrf_token %}  {% comment %}  cross-site-request-forgery  to solve security vulnerability
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">@</span>
-        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-    </div>
-    
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Mail" aria-label="Recipient's username" aria-describedby="basic-addon2">
-        <span class="input-group-text" id="basic-addon2">@example.com</span>
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-        <div id="passwordHelp" class="form-text">Must be 8-20 characters long</div>
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">First Name</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Last Name</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Name to Display</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Pet Name</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Pet Name</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <button type="submit" class="btn btn-primary">Signup</button>
-</form> {% endcomment %}

@@ -3,71 +3,157 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block head %}
-    <link rel="stylesheet" href="{% static 'users/css/pet_care_tips.css' %}">
+<link rel="stylesheet" href="{% static 'portal/css/pet_care_tips.css' %}">
+<style>
+    /* Add custom styles for uniform image sizes */
+    .card-img-top {
+        height: 40vh; /* Adjust as needed */
+        
+        object-fit: cover;
+    }
+
+
+</style>
 {% endblock head %}
 
 {% block body %}
-    <section class="pet-care-tips">
-        <div class="container">
-            <h1>Pet Care Tips</h1>
-            {% for tip in tips %}
-                <div class="tip-card">
-                    <h2>{{ tip.title }}</h2>
-                    <p>{{ tip.content }}</p>
-                    <p>Posted by: {{ tip.author }}</p>
-                    <p>Comments:</p>
-                    {% for comment in tip.comments.all %}
-                        <div class="comment">
-                            <p>{{ comment.content }} - {{ comment.author }}</p>
-                        </div>
-                    {% endfor %}
-                    <button class="btn btn-primary add-comment-btn" data-tip-id="{{ tip.id }}">Add Comment</button>
-                    <div class="add-comment-form" id="add-comment-form-{{ tip.id }}" style="display: none;">
-                        <form method="post" action="{% url 'add_comment' tip.id %}">
-                            {% csrf_token %}
-                            {{ form|crispy }}
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
+<section class="pet-care-tips">
+    <div class="container">
+        <h1 class="text-center mb-5">Professional Pet Care Tips</h1>
+        <div class="row">
+            <div class="col mb-4">
+                <div class="card">
+                    <img src="{% static 'portal/images/dog_care.jpg' %}" class="card-img-top" alt="Dog Care">
+                    <div class="card-body">
+                        <h5 class="card-title">Dog Care</h5>
+                        <p class="card-text">Here are some tips for caring for your dog:</p>
+                        <ul>
+                            <li>Provide regular exercise to keep your dog healthy and active.</li>
+                            <li>Feed your dog a balanced diet suitable for its age and breed.</li>
+                            <li>Keep up with regular grooming, including baths and nail trimming.</li>
+                            <li>Ensure your dog receives regular veterinary check-ups and vaccinations.</li>
+                        </ul>
+                        <a href="https://www.akc.org/expert-advice/" class="btn btn-primary">Read More</a>
                     </div>
                 </div>
-            {% endfor %}
-            <div class="add-tip-form" style="display: none;">
-                <h2>Add Pet Care Tip</h2>
-                <form method="post" action="">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
             </div>
-            <button class="btn btn-primary add-tip-btn">Add Tip</button>
+            <div class="col mb-4">
+                <div class="card">
+                    <img src="{% static 'portal/images/cat_care.jpg' %}" class="card-img-top" alt="Cat Care">
+                    <div class="card-body">
+                        <h5 class="card-title">Cat Care</h5>
+                        <p class="card-text">Here are some tips for caring for your cat:</p>
+                        <ul>
+                            <li>Provide a clean litter box and fresh water daily.</li>
+                            <li>Feed your cat high-quality cat food and provide plenty of toys for mental stimulation.</li>
+                            <li>Keep up with regular grooming, including brushing and nail trimming.</li>
+                            <li>Make sure your cat has regular veterinary check-ups and vaccinations.</li>
+                        </ul>
+                        <a href="https://www.aspca.org/pet-care/cat-care" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col mb-4">
+                <div class="card">
+                    <img src="{% static 'portal/images/bird_care.jpg' %}" class="card-img-top" alt="Bird Care">
+                    <div class="card-body">
+                        <h5 class="card-title">Bird Care</h5>
+                        <p class="card-text">Here are some tips for caring for your pet bird:</p>
+                        <ul>
+                            <li>Provide a spacious cage with plenty of room for your bird to move around.</li>
+                            <li>Feed your bird a varied diet that includes seeds, pellets, fruits, and vegetables.</li>
+                            <li>Give your bird plenty of toys and activities to keep it mentally stimulated.</li>
+                            <li>Handle your bird gently and provide regular socialization to prevent behavioral issues.</li>
+                        </ul>
+                        <a href="https://www.thesprucepets.com/bird-care-1236736" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col mb-4">
+                <div class="card">
+                    <img src="{% static 'portal/images/fish_care.jpg' %}" class="card-img-top" alt="Fish Care">
+                    <div class="card-body">
+                        <h5 class="card-title">Fish Care</h5>
+                        <p class="card-text">Here are some tips for caring for your pet fish:</p>
+                        <ul>
+                            <li>Keep the fish tank clean by regularly changing the water and removing debris.</li>
+                            <li>Monitor water temperature and pH levels to ensure a healthy environment for your fish.</li>
+                            <li>Feed your fish a balanced diet and avoid overfeeding to prevent water pollution.</li>
+                            <li>Provide adequate filtration and aeration to maintain water quality and oxygen levels.</li>
+                        </ul>
+                        <a href="https://www.aqueon.com/articles/care-freshwater-fish" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col mb-4">
+                <div class="card">
+                    <img src="{% static 'portal/images/rabbit_care.jpg' %}" class="card-img-top" alt="Rabbit Care">
+                    <div class="card-body">
+                        <h5 class="card-title">Rabbit Care</h5>
+                        <p class="card-text">Here are some tips for caring for your pet rabbit:</p>
+                        <ul>
+                            <li>Provide a spacious cage or hutch with plenty of room for your rabbit to move around.</li>
+                            <li>Offer a variety of fresh vegetables, hay, and pellets as part of your rabbit's diet.</li>
+                            <li>Regularly groom your rabbit to prevent mats and tangles in its fur.</li>
+                            <li>Allow your rabbit time outside of its enclosure for exercise and socialization.</li>
+                        </ul>
+                        <a href="https://rabbit.org/care/" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col mb-4">
+                <div class="card">
+                    <img src="{% static 'portal/images/hamster_care.jpg' %}" class="card-img-top" alt="Hamster Care">
+                    <div class="card-body">
+                        <h5 class="card-title">Hamster Care</h5>
+                        <p class="card-text">Here are some tips for caring for your pet hamster:</p>
+                        <ul>
+                            <li>Provide a suitable cage with bedding, toys, and a running wheel for exercise.</li>
+                            <li>Offer a balanced diet of hamster pellets, fresh vegetables, and occasional treats.</li>
+                            <li>Handle your hamster gently and supervise playtime outside of its cage.</li>
+                            <li>Regularly clean and maintain the cage to prevent odor and bacteria buildup.</li>
+                        </ul>
+                        <a href="https://www.care.com/c/stories/11014/hamster-care-101/" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col mb-4">
+                <div class="card">
+                    <img src="{% static 'portal/images/turtle_care.jpg' %}" class="card-img-top" alt="Turtle Care">
+                    <div class="card-body">
+                        <h5 class="card-title">Turtle Care</h5>
+                        <p class="card-text">Here are some tips for caring for your pet turtle:</p>
+                        <ul>
+                            <li>Provide a spacious tank or enclosure with both land and water areas.</li>
+                            <li>Offer a varied diet of commercial turtle food, live prey, and leafy greens.</li>
+                            <li>Monitor water quality and temperature, and clean the tank regularly.</li>
+                            <li>Provide basking spots and UVB lighting for proper thermoregulation.</li>
+                        </ul>
+                        <a href="https://www.petmd.com/reptile/care/evr_rp_turtle_care" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col mb-4">
+                <div class="card">
+                    <img src="{% static 'portal/images/guinea_pig_care.jpg' %}" class="card-img-top" alt="Guinea Pig Care">
+                    <div class="card-body">
+                        <h5 class="card-title">Guinea Pig Care</h5>
+                        <p class="card-text">Here are some tips for caring for your pet guinea pig:</p>
+                        <ul>
+                            <li>Provide a large cage with a solid bottom, bedding, and hiding spots.</li>
+                            <li>Offer a diet of hay, fresh vegetables, pellets, and occasional fruit treats.</li>
+                            <li>Handle your guinea pig gently and provide regular socialization.</li>
+                            <li>Keep the cage clean and provide fresh water daily.</li>
+                        </ul>
+                        <a href="https://www.thesprucepets.com/guinea-pig-care-1239041" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 {% endblock %}
 
-
 {% block script %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const addTipBtn = document.querySelector('.add-tip-btn');
-            const addTipForm = document.querySelector('.add-tip-form');
 
-            addTipBtn.addEventListener('click', function() {
-                addTipForm.style.display = 'block';
-            });
-
-            const addCommentBtns = document.querySelectorAll('.add-comment-btn');
-
-            addCommentBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const tipId = btn.dataset.tipId;
-                    const commentForm = document.getElementById(`add-comment-form-${tipId}`);
-                    if (commentForm.style.display === 'none') {
-                        commentForm.style.display = 'block';
-                    } else {
-                        commentForm.style.display = 'none';
-                    }
-                });
-            });
-        });
-    </script>
 {% endblock script %}

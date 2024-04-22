@@ -1,7 +1,7 @@
 from django.db import models
 from users.models import UserModel
 
-# Create your models here.
+# Pet model
 class PetModel(models.Model):
     
     pet_name = models.CharField(max_length=50, blank=False,null=False)

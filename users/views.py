@@ -17,7 +17,7 @@ from pets.forms import PetRegistration
 from star_ratings.models import Rating
 
 
-# Create your views here.
+# Create your views heres.
 def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("users:login"))
@@ -97,12 +97,12 @@ def user_profile(request):
             pet.delete()
             return redirect('users:user-profile')
         elif 'edit_pet' in request.POST:
-            print("POST Data:", request.POST)
             pet_id = request.POST.get('edit_pet')
-            print("Pet ID from POST data:", pet_id)  # Print pet_id to check its value
             pet_instance = get_object_or_404(PetModel, id=pet_id)  # Retrieve the pet instance
             pet_form = PetRegistration(request.POST or None, instance=pet_instance)  # Initialize the form with the instance
             if pet_form.is_valid():
+                pet_form.save(commit=False)
+                pet_form.owner = request.user
                 pet_form.save()
                 return redirect('users:user-profile')
             else:
@@ -146,28 +146,6 @@ def reviews(request):
         'form': form
     }
     return render(request, 'users/reviews.html', context)
-
-
-
-# def reviews(request):
-#     if request.method == 'GET':
-#         form = ReviewsForm()
-#         reviews = ReviewsModel.objects.all()
-#         context = {
-#             'form' : form,
-#             'reviews' : reviews
-#         }
-#     else:
-#         form = ReviewsForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             form = ReviewsForm()
-#             return render(request, "users/reviews.html", {
-#                     "message" : "Review Posted. Thank you for supporting the community!",
-#                     "form" : form
-#                 })
-#     return render(request, 'users/reviews.html', context)
-
 
 def change_password(request):
     if request.method == 'POST':

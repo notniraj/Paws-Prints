@@ -53,7 +53,8 @@ class ReviewForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # Add CSS class to the rating field for styling
         self.fields['rating'].widget.attrs.update({'class': 'form-control'})
-    
+        
+    # Handle form validation on wrong rating pass
     def clean_rating(self):
         rating = self.cleaned_data['rating']
         if rating < 1 or rating > 5:

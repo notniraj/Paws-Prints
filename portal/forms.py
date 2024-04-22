@@ -5,6 +5,7 @@ from .models import Listings
 from .models import PetCareTip, Comment
 
 
+# Add Listing Form
 class AddListingForm(ModelForm):
     
     def __init__(self, *args, **kwargs):
@@ -21,6 +22,7 @@ class AddListingForm(ModelForm):
             'date_lost': forms.TextInput(attrs={'type': 'date'})
         }
 
+# Search Bar Form
 class SearchForm(ModelForm):
     
     class Meta:
@@ -28,7 +30,7 @@ class SearchForm(ModelForm):
         fields = ['id']
 
 
-
+# Future Work:
 class PetCareTipForm(forms.ModelForm):
     class Meta:
         model = PetCareTip

@@ -77,6 +77,16 @@
         #search-results ul a{
             text-decoration: none;
         }
+
+        #search-results li:hover{
+            background-color: white;
+            border-radius: 20px;
+        }
+
+        .searched-items p{
+            color: black;
+            text-decoration: none;
+        }
     </style>
 
     {% block head %}
@@ -86,6 +96,7 @@
 <body>
     <div class="searchbar position-absolute flex-column gap-4 justify-content-center align-items-center" style=" width:100vw; height: 100vh; z-index: 2000; backdrop-filter: blur(10px);" id="searchbar">
         <button class="close-btn rounded-5 btn btn-danger px-2 py-1" style="top:0; right: 0;">&times;</button>
+        <h2>Search for Pets</h2>
         <form id="search-form" action="{% url "portal:search-listings" %}" method="get">
             <input id="searchQuery" type="text" name="query" placeholder="Search..." class="form-control input-text text-center rounded-5 py-3" autofocus>
             <button type="submit" style="display: none;"></button>
@@ -222,6 +233,7 @@
                         link.href = `listing/${result.id}`;
                         const div = document.createElement('div');
                         // Apply styles to the div
+                        div.classList = 'searched-items';
                         div.style.border = '1px solid #ccc';
                         div.style.borderRadius = '8px';
                         div.style.padding = '10px';
