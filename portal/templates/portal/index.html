@@ -3,6 +3,41 @@
 
 {% block head %}
     <style>
+        /* Add your custom CSS styles here */
+        .cover-page {
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Adjust recently lost pets section styles */
+        .recent-lost {
+            backdrop-filter: blur(10px);
+            padding: 50px 0; /* Adjust padding as needed */
+        }
+
+        /* Add parallax effect to the entire page */
+        body {
+            background-image: url("{% static 'portal/images/coverart.jpg' %}");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        /* Add your custom CSS styles for the about me/footer section */
+        .about-me {
+            backdrop-filter: blur(10px);
+            box-shadow: 40px 10px 40px 10px white;
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .user-stories{
+            backdrop-filter: blur(10px);
+        }
+
         .card-container {
             display: flex;
             flex-wrap: wrap;
@@ -55,6 +90,8 @@
         .btn:hover {
             background-color: #f15b9c;
         }
+
+
     </style>
 
 {% endblock head %}
@@ -62,33 +99,77 @@
 
 
 {% block body %}
-
-
-    <section class="cover-page d-flex flex-column align-items-center justify-content-center">
-            <div class="cover-text d-flex flex-column align-items-center justify-content-center">
-                <h1 class="w">Find Your Pets</h1>
-                <p>List your missing pet or help find them.</p>
-            </div>
+    <section class="cover-page">
+        <div class="cover-text">
+            <h1>Find Your Pets</h1>
+            <p>List your missing pet or help find them.</p>
+        </div>
     </section>
 
     <main>
         <section class="recent-lost">
-            <h2 class="text-center m-2">Recently Lost Pets</h2>
-            <div class="card-container p-5">
-                {% for listing in recent_lost_listings %}
-                <div class="card">
-                    <img src="{% get_media_prefix %}{{ listing.pet.pet_profile }}" alt="Pet Image">
-                    <div class="card-body">
-                        <h2 class="card-title">{{ listing.pet.pet_name }}</h2>
-                        <h6 class="">Owner: {{ listing.user_id.username }}</h6>
-                        <p class="card-text">{{ listing.pet.pet_description }}</p>
-                        <a href="{% url 'portal:view-comment' listing_id=listing.id %}" class="btn">Mark Location</a>
-                        <a href="{% url 'portal:listing-map' listing_id=listing.id %}" class="btn">Last Seen Locations</a>
-                    </div>
+            <div class="container">
+                <h2 class="text-center mb-4">Recently Lost Pets</h2>
+                <div class="card-container">
+                    {% for listing in recent_lost_listings %}
+                        <div class="card">
+                            <img src="{% get_media_prefix %}{{ listing.pet.pet_profile }}" alt="Pet Image">
+                            <div class="card-body">
+                                <h2 class="card-title">{{ listing.pet.pet_name }}</h2>
+                                <h6 class="owner">Owner: {{ listing.user_id.username }}</h6>
+                                <p class="card-text">{{ listing.pet.pet_description }}</p>
+                                <a href="{% url 'portal:view-comment' listing_id=listing.id %}" class="btn">Mark Location</a>
+                                <a href="{% url 'portal:listing-map' listing_id=listing.id %}" class="btn">Last Seen Locations</a>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
         </section>
+
+        <!-- User Stories/Reviews Section -->
+        <section class="user-stories p-4">
+            <div class="container">
+                <h2 class="text-center mb-5">User Stories & Reviews</h2>
+                <div class="row">
+                    {% for review in user_reviews %}
+                        <div class="col-md-4 d-flex justify-content-center align-items-center">
+                            <div class="card mb-4 h-100">
+                                <img src="{% get_media_prefix %}{{ review.user.profile_picture }}" class="card-img-top" alt="User Image">
+                                <div class="card-body d-flex flex-column justify-content-start align-items-center">
+                                    <p class="card-text mb-4" style="flex-grow: 1;">{{ review.user }}</p>
+                                    <p class="card-text mb-4" style="flex-grow: 2;">{{ review.comment }}</p>
+                                    <p class="card-text mb-4" style="flex-grow: 1;">Rating: {{ review.rating }}</p>
+                                    <!-- Add user's name or any other details if available -->
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
     </main>
 
-{% endblock body%}
+    <!-- About Me/Footer Section -->
+    <section class="about-me py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="mb-4">About Us</h2>
+                    <p class="mb-4">Welcome to our platform dedicated to reuniting lost pets with their owners and helping animals find loving forever homes. Our mission is to provide a centralized hub where pet owners can report lost pets, search for missing animals, and connect with local resources to facilitate their reunion.</p>
+                </div>
+                <div class="col-md-6 m-auto">
+                    
+                    <p class="mb-4">Join us in our mission to create a safer, happier world for pets and their human companions. Together, we can make a difference!</p>
+                    
+                    <p class="mb-0">Contact us:</p>
+                    <ul class="list-unstyled">
+                        <li>Email: info@example.com</li>
+                        <li>Phone: +123-456-7890</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock body %}

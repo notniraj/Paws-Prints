@@ -6,15 +6,15 @@ from .forms import AddListingForm
 from .models import Listings, ListingComments
 
 from django.contrib.auth.decorators import login_required
-from .models import PetCareTip
-from .forms import PetCareTipForm, CommentForm
+from users.models import Review
 
 
 @login_required(login_url='users:login')
 def index(request):
     if request.method == 'GET': 
-        recent_lost_listings = Listings.objects.filter(date_found__isnull=True).order_by('-date_lost')[:5]
-    return render(request, "portal/index.html", {'recent_lost_listings': recent_lost_listings})
+        recent_lost_listings = Listings.objects.filter(date_found__isnull=True).order_by('-date_lost')[:4]
+        user_reviews = Review.objects.all().order_by('-created_at')[:3]  # Fetch recent user reviews
+    return render(request, "portal/index.html", {'recent_lost_listings': recent_lost_listings, 'user_reviews': user_reviews})
 
 @login_required(login_url='users:login')
 def listings(request):

@@ -2,6 +2,18 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+{% block head %}
+<style>
+    /* Add parallax effect to the entire page */
+    body {
+        background-image: url("{% static 'portal/images/coverart.jpg' %}");
+        background-size: cover;
+        background-attachment: fixed;
+        backdrop-filter: blur(10px);
+    }
+</style>
+{% endblock head %}
+
 {% block body %}
 <div class="container mt-4">
     <div class="row">

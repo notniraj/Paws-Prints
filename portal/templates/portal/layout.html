@@ -32,6 +32,10 @@
         }
         body{
             position: relative;
+            background-image: url("{% static 'portal/images/coverart.jpg' %}");
+            background-size: cover;
+            background-attachment: fixed;
+            backdrop-filter: blur(10px);
         }
         
         .navbar{
@@ -94,7 +98,7 @@
 
 </head>
 <body>
-    <div class="searchbar position-absolute flex-column gap-4 justify-content-center align-items-center" style=" width:100vw; height: 100vh; z-index: 2000; backdrop-filter: blur(10px);" id="searchbar">
+    <div class="searchbar position-absolute flex-column gap-4 justify-content-center align-items-center" style=" width:100vw; height: 100vh; z-index: 2000; backdrop-filter: blur(40px);" id="searchbar">
         <button class="close-btn rounded-5 btn btn-danger px-2 py-1" style="top:0; right: 0;">&times;</button>
         <h2>Search for Pets</h2>
         <form id="search-form" action="{% url "portal:search-listings" %}" method="get">
