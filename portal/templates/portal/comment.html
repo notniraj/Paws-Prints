@@ -14,8 +14,8 @@
             backdrop-filter:blur(10px)
         }
         #map{
-            height: 20em;
-            width: 50em;
+            height: 40em;
+            width: 60em;
         }
 
         .comments-container{
@@ -25,6 +25,8 @@
 
         .comment-modal{
             backdrop-filter: blur(20px);
+            height: 100vh;
+            width: 100vw;
         }
         
         .comments-container .card-comments{
@@ -144,9 +146,8 @@
             </div>
         </div>
 
-        <div class="comment-modal position-absolute d-flex flex-column justify-content-center align-items-center p-5 gap-5" style="transform: translateY(-1000px); width: 100%;">
+        <div class="comment-modal position-absolute d-flex justify-content-center align-items-center p-4 gap-4" style="transform: translateY(-1000px);">
             {% include "portal/map-template.html" %}
-            <button class="cancel-modal btn bg-danger" onclick="cancelModal()">Cancel</button>
         </div>
     </section>
     

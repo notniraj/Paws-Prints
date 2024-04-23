@@ -33,29 +33,7 @@ class UserModel(AbstractUser):
 
 class Review(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    comment = models.TextField(blank=True, null=True)
+    comment = models.TextField()
     rating = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
-
-# class ReviewsModel(models.Model):
-#     user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE, default=0)
-#     review_message = models.TextField(blank=True)
-#     rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
-#     creation_date = models.DateTimeField(auto_now_add=True)
-#     update_date = models.DateTimeField(auto_now=True)
-    
-#     class Meta:
-#         constraints = (
-#             # for checking in the DB
-#             CheckConstraint(
-#                 check=Q(rating__gte=0.0) & Q(rating__lte=5.0),
-#                 name='reviews_ratings_range'),
-#             )
-        
-#     def __str__(self):
-#         return f"{self.user_id.username} : {self.rating}"
-    
-    
-
-
     

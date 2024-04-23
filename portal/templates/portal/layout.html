@@ -1,6 +1,5 @@
 {% load static %}
 {% load crispy_forms_tags %}
-{% load ratings %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -187,6 +186,18 @@
             const closeBtn = document.querySelector("#searchbar .close-btn");
             const searchForm = document.getElementById("search-form");
             const searchResults = document.getElementById("search-results");
+            var forms = document.querySelectorAll('.needs-validation');
+
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        }
+                
+                        form.classList.add('was-validated');
+                    }, false);
+                });
 
             searchBtn.addEventListener("click", function () {
                 searchbar.classList.toggle("active");

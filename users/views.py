@@ -10,11 +10,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
-from .models import Review, UserModel
+from .models import Review
 from pets.models import PetModel
 from .forms import ReviewForm, RegistrationForm, EditProfileForm
 from pets.forms import PetRegistration
-from star_ratings.models import Rating
 
 
 # Create your views heres.

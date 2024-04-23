@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "leaflet-search": "^4.0.0"
+    "leaflet-search": "^4.0.0",
+    "star-ratings": "^1.0.0"
   }
 }

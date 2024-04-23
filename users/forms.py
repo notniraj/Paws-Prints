@@ -1,7 +1,5 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 from .models import UserModel, Review
-from django.forms import ModelForm
-from star_ratings.models import Rating
 
 from django.contrib.auth.forms import forms
 from django.core.exceptions import ValidationError
@@ -54,7 +52,7 @@ class ReviewForm(forms.ModelForm):
         # Add CSS class to the rating field for styling
         self.fields['rating'].widget.attrs.update({'class': 'form-control'})
         
-    # Handle form validation on wrong rating pass
+    # Handle form validation on wrong rating pass.
     def clean_rating(self):
         rating = self.cleaned_data['rating']
         if rating < 1 or rating > 5:
